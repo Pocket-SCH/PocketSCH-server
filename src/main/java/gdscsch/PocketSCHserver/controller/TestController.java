@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/test")
 public class TestController {
-    TestService testService;
+    private final TestService testService;
 
     @GetMapping("/test")
     public ResponseEntity test() {
