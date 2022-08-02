@@ -1,4 +1,4 @@
-package gdscsch.PocketSCHserver.schedule;
+package gdscsch.PocketSCHserver.info.schedule;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
