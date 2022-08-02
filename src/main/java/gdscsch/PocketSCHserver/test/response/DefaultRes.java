@@ -1,4 +1,4 @@
-package gdscsch.PocketSCHserver.response;
+package gdscsch.PocketSCHserver.test.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
