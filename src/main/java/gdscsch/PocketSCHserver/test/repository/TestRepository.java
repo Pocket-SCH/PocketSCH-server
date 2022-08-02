@@ -1,6 +1,6 @@
-package gdscsch.PocketSCHserver.repository;
+package gdscsch.PocketSCHserver.test.repository;
 
-import gdscsch.PocketSCHserver.entity.Test;
+import gdscsch.PocketSCHserver.test.entity.Test;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

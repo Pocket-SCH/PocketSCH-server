@@ -1,4 +1,4 @@
-package gdscsch.PocketSCHserver.dto;
+package gdscsch.PocketSCHserver.test.dto;
 
 import lombok.Getter;
 import lombok.Setter;

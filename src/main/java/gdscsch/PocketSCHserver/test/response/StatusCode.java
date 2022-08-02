@@ -1,4 +1,4 @@
-package gdscsch.PocketSCHserver.response;
+package gdscsch.PocketSCHserver.test.response;
 
 public class StatusCode {
     public static final int OK = 200;

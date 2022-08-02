@@ -1,7 +1,7 @@
-package gdscsch.PocketSCHserver.servcie;
+package gdscsch.PocketSCHserver.test.servcie;
 
-import gdscsch.PocketSCHserver.dto.TestDto;
-import gdscsch.PocketSCHserver.repository.TestRepository;
+import gdscsch.PocketSCHserver.test.dto.TestDto;
+import gdscsch.PocketSCHserver.test.repository.TestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
