@@ -2,8 +2,8 @@ package gdscsch.PocketSCHserver.test.controller;
 
 
 import gdscsch.PocketSCHserver.test.dto.TestDto;
-import gdscsch.PocketSCHserver.test.response.DefaultRes;
-import gdscsch.PocketSCHserver.test.response.StatusCode;
+import gdscsch.PocketSCHserver.response.DefaultRes;
+import gdscsch.PocketSCHserver.response.StatusCode;
 import gdscsch.PocketSCHserver.test.servcie.TestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

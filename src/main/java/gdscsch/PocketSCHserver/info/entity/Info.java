@@ -1,4 +1,4 @@
-package gdscsch.PocketSCHserver.entity.food;
+package gdscsch.PocketSCHserver.info.entity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SpringBootApplication
 @EntityListeners(AuditingEntityListener.class)
-public class FoodMenu {
+public class Info {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -24,18 +24,30 @@ public class FoodMenu {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private FoodCategory foodCategory;
+    private InfoCategory infoCategory;
+
+    @Column(nullable = false)
+    private Integer infoNumber;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String title;
 
     @Column(nullable = false, length = 191)
-    private String name;
+    private String url;
+
+    @Column(nullable = false)
+    private LocalDateTime infoDate;
 
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @Builder
-    public FoodMenu(FoodCategory foodCategory, String name) {
-        this.foodCategory = foodCategory;
-        this.name = name;
+    public Info(InfoCategory infoCategory, Integer infoNumber, String title, String url, LocalDateTime infoDate) {
+        this.infoCategory = infoCategory;
+        this.infoNumber = infoNumber;
+        this.title = title;
+        this.url = url;
+        this.infoDate = infoDate;
     }
 }

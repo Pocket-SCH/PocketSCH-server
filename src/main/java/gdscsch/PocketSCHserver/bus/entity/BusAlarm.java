@@ -1,5 +1,6 @@
-package gdscsch.PocketSCHserver.entity.info;
+package gdscsch.PocketSCHserver.bus.entity;
 
+import gdscsch.PocketSCHserver.token.entity.Token;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SpringBootApplication
 @EntityListeners(AuditingEntityListener.class)
-public class Info {
+public class BusAlarm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -24,30 +25,19 @@ public class Info {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private InfoCategory infoCategory;
+    private Token token;
 
-    @Column(nullable = false)
-    private Integer infoNumber;
-
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String title;
-
-    @Column(nullable = false, length = 191)
-    private String url;
-
-    @Column(nullable = false)
-    private LocalDateTime infoDate;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Bus bus;
 
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @Builder
-    public Info(InfoCategory infoCategory, Integer infoNumber, String title, String url, LocalDateTime infoDate) {
-        this.infoCategory = infoCategory;
-        this.infoNumber = infoNumber;
-        this.title = title;
-        this.url = url;
-        this.infoDate = infoDate;
+    public BusAlarm(Token token, Bus bus) {
+        this.token = token;
+        this.bus = bus;
     }
 }
