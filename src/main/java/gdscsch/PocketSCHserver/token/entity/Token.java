@@ -1,4 +1,4 @@
-package gdscsch.PocketSCHserver.entity.food;
+package gdscsch.PocketSCHserver.token.entity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,21 +17,17 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SpringBootApplication
 @EntityListeners(AuditingEntityListener.class)
-public class FoodCategory {
+public class Token {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
-    private Integer id;
-
-    @Column(nullable = false, length = 10)
-    private String category;
+    @Column(length = 160)
+    private String token;
 
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @Builder
-    public FoodCategory(String category) {
-        this.category = category;
+    public Token(String token) {
+        this.token = token;
     }
 }

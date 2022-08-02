@@ -1,7 +1,5 @@
-package gdscsch.PocketSCHserver.entity.bus;
+package gdscsch.PocketSCHserver.food.entity;
 
-import gdscsch.PocketSCHserver.entity.Token;
-import gdscsch.PocketSCHserver.entity.bus.Bus;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,27 +16,21 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SpringBootApplication
 @EntityListeners(AuditingEntityListener.class)
-public class BusAlarm {
+public class FoodCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private Token token;
-
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private Bus bus;
+    @Column(nullable = false, length = 10)
+    private String category;
 
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @Builder
-    public BusAlarm(Token token, Bus bus) {
-        this.token = token;
-        this.bus = bus;
+    public FoodCategory(String category) {
+        this.category = category;
     }
 }

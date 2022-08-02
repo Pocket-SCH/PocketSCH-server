@@ -1,4 +1,4 @@
-package gdscsch.PocketSCHserver.entity.food;
+package gdscsch.PocketSCHserver.food.entity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
