@@ -1,111 +1,30 @@
 package gdscsch.PocketSCHserver.info.controller;
 
-
-import gdscsch.PocketSCHserver.info.dto.KeywordDto;
-
-import gdscsch.PocketSCHserver.info.exception.EmptyStringException;
-import gdscsch.PocketSCHserver.info.response.ResponseHandler;
+import gdscsch.PocketSCHserver.food.entity.FoodMenu;
+import gdscsch.PocketSCHserver.food.service.FoodService;
+import gdscsch.PocketSCHserver.info.dto.AddKeywordDto;
+import gdscsch.PocketSCHserver.info.entity.Keyword;
 import gdscsch.PocketSCHserver.info.service.InfoService;
-import java.util.List;
-import java.util.NoSuchElementException;
+import gdscsch.PocketSCHserver.response.DefaultRes;
+import gdscsch.PocketSCHserver.response.StatusCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/pocket-sch/v1/info")
 public class InfoController {
-
     private final InfoService infoService;
 
-    /**
-     * 공지 키워드 생성
-     * <p>상세 설명 : 공지 목록에서 자신에게 등록할 키워드 생성
-     *
-     * @param token            : FCM 토큰
-     * @param createKeywordDto : 추가 키워드
-     * @author TaeGyu-Han
-     * @see <a href="http://127.0.0.1:8080/pocket-sch/v1/info/keywords">
-     * URL : http://127.0.0.1:8080/pocket-sch/v1/info/keywords
-     * </a>
-     */
-    @PostMapping("/keywords")
-    public ResponseEntity createKeyword(
-        @RequestHeader("Authorization") String token,
-        @RequestBody KeywordDto.Craet createKeywordDto
-    ) {
-        try {
-            KeywordDto.Get keyword = infoService.createKeyword(token, createKeywordDto);
-            return ResponseHandler.generateResponse("keyword 생성 Success", keyword, HttpStatus.CREATED);
-        } catch (NoSuchElementException nsee) {
-            return ResponseHandler.toekenBadRequestResponse(token, HttpStatus.BAD_REQUEST);
-        } catch (EmptyStringException ese) {
-            return ResponseHandler.keywordBadRequestResponse(createKeywordDto, HttpStatus.BAD_REQUEST);
-        }
+    @PostMapping("/keyword/add")
+    public ResponseEntity addKeyword(@RequestHeader("Authorization") String token, @RequestBody AddKeywordDto addKeywordDto) {
+        Keyword keyword = infoService.addKeyword(token, addKeywordDto.getKeyword());
+
+        return keyword != null ? new ResponseEntity(DefaultRes.res(StatusCode.OK, "키워드 추가 완료", keyword.getId()), HttpStatus.OK) :
+                new ResponseEntity(DefaultRes.res(StatusCode.OK, "키워드 추가 실패"), HttpStatus.OK);
     }
-
-    /**
-     * 공지 키워드 리스트 조회
-     * <p>상세 설명 : 공지 목록에서 자신에게 등록한 키워드들 조회
-     *
-     * @param token : FCM 토큰
-     * @author TaeGyu-Han
-     * @see <a href="http://127.0.0.1:8080/pocket-sch/v1/info/keywords">
-     * URL : http://127.0.0.1:8080/pocket-sch/v1/info/keywords
-     * </a>
-     */
-    @GetMapping("/keywords")
-    public ResponseEntity readKeywords(
-        @RequestHeader("Authorization") String token
-    ) {
-        try {
-            List<KeywordDto.Get> keywords = infoService.readKeywords(token);
-            return ResponseHandler.generateResponse("keywords 조회 Success", keywords, HttpStatus.OK);
-        } catch (NoSuchElementException nsee) {
-            return ResponseHandler.toekenBadRequestResponse(token, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    /**
-     * 공지 키워드 삭제
-     * <p>상세 설명 : 공지 목록에서 자신이 등록한 키워드 삭제
-     *
-     * @param token : FCM 토큰
-     * @param id
-     * @author TaeGyu-Han
-     * @see <a href="http://127.0.0.1:8080/pocket-sch/v1/info/keywords/{id}">
-     * URL : http://127.0.0.1:8080/pocket-sch/v1/info/keywords/{id}
-     * </a>
-     */
-    @DeleteMapping("/keywords/{id}")
-    public ResponseEntity deleteKeyword(
-        @RequestHeader("Authorization") String token,
-        @PathVariable(value = "id", required = true) Integer id
-    ) {
-        try {
-            boolean keyword = infoService.deleteKeyword(token, id);
-            if (keyword) {
-                return ResponseHandler.deleteSuccessResponse("keyword 삭제 Success", id, HttpStatus.OK);
-            }
-            return ResponseHandler.nonExistIdRequestResponse(id, HttpStatus.BAD_REQUEST);
-        } catch (NoSuchElementException nsee) {
-            return ResponseHandler.toekenBadRequestResponse(token, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    // 공지사항 (대학 공지) 리스트 조회
-
-    // 공지사항 (키워드) 리스트 조회
-
-    // 공지사항 (학사공지) 리스트 조회
 }
