@@ -1,9 +1,11 @@
 package gdscsch.PocketSCHserver.info.service;
 
 import gdscsch.PocketSCHserver.info.dto.KeywordDto;
+import gdscsch.PocketSCHserver.info.dto.KeywordDto.Get;
 import gdscsch.PocketSCHserver.info.entity.Keyword;
 import gdscsch.PocketSCHserver.info.exception.EmptyStringException;
 import gdscsch.PocketSCHserver.info.repository.KeywordRepository;
+import gdscsch.PocketSCHserver.token.entity.Token;
 import gdscsch.PocketSCHserver.token.repository.TokenRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +13,11 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import gdscsch.PocketSCHserver.token.entity.Token;
-
 
 @Component
 @RequiredArgsConstructor
-public class InfoService {
+public class InfoKeywordsService {
+
 
     private final TokenRepository tokenRepository;
     private final KeywordRepository keywordRepository;
@@ -36,11 +37,11 @@ public class InfoService {
         return modelMapper.map(savedKeyword, KeywordDto.Get.class);
     }
 
-    public List<KeywordDto.Get> readKeywords(String token) {
+    public List<Get> readKeywords(String token) {
 
         Token foundToken = tokenRepository.findByToken(token).get();
         List<Keyword> keywords = keywordRepository.findAllByToken(foundToken);
-        List<KeywordDto.Get> keywordDtos = new ArrayList<KeywordDto.Get>();
+        List<KeywordDto.Get> keywordDtos = new ArrayList<Get>();
 
         for (Keyword keyword : keywords) {
             keywordDtos.add(modelMapper.map(keyword, KeywordDto.Get.class));
