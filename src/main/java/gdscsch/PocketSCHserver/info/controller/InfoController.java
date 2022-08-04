@@ -5,6 +5,8 @@ import gdscsch.PocketSCHserver.info.dto.InfoDto;
 import gdscsch.PocketSCHserver.info.dto.KeywordDto;
 
 import gdscsch.PocketSCHserver.info.exception.EmptyStringException;
+import gdscsch.PocketSCHserver.info.response.InfoResponseHandler;
+import gdscsch.PocketSCHserver.info.response.KeywordResponseHandler;
 import gdscsch.PocketSCHserver.info.response.ResponseHandler;
 import gdscsch.PocketSCHserver.info.service.InfoKeywordsService;
 import gdscsch.PocketSCHserver.info.service.InfoUniversityNoticesService;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -52,7 +55,7 @@ public class InfoController {
         } catch (NoSuchElementException nsee) {
             return ResponseHandler.toekenBadRequestResponse(token, HttpStatus.BAD_REQUEST);
         } catch (EmptyStringException ese) {
-            return ResponseHandler.keywordBadRequestResponse(createKeywordDto, HttpStatus.BAD_REQUEST);
+            return KeywordResponseHandler.keywordBadRequestResponse(createKeywordDto, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -97,18 +100,33 @@ public class InfoController {
         try {
             boolean successCheck = infoKeywordsService.deleteKeyword(token, id);
             if (successCheck) {
-                return ResponseHandler.deleteSuccessResponse("keyword 삭제 Success", id, HttpStatus.OK);
+                return KeywordResponseHandler.deleteSuccessResponse("keyword 삭제 Success", id, HttpStatus.OK);
             }
-            return ResponseHandler.nonExistIdRequestResponse(id, HttpStatus.BAD_REQUEST);
+            return KeywordResponseHandler.nonExistIdRequestResponse(id, HttpStatus.BAD_REQUEST);
         } catch (NoSuchElementException nsee) {
             return ResponseHandler.toekenBadRequestResponse(token, HttpStatus.BAD_REQUEST);
         }
     }
 
-    
+    private final InfoUniversityNoticesService infoUniversityNoticesService;
 
-
-    // 공지사항 (대학공지) 리스트 조회
+    /**
+     * 공지사항 (대학공지) 리스트 조회
+     * <p>상세 설명 : 대학 공지 리스트 조회
+     *
+     * @author TaeGyu-Han
+     * @see <a href="http://127.0.0.1:8080/pocket-sch/v1/info/university-notices">
+     * URL : http://127.0.0.1:8080/pocket-sch/v1/info/university-notices
+     * </a>
+     */
+    @GetMapping(value = "/university-notices")
+    public ResponseEntity readUniversityNotices(
+        @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+        @RequestParam(value = "size", required = false, defaultValue = "10") Integer size
+    ) {
+        List<InfoDto.Get> infoDtos = infoUniversityNoticesService.readUniversityNotices(page, size);
+        return InfoResponseHandler.infoResponse("university notices 조회 Success", infoDtos, 0, HttpStatus.OK);
+    }
 
     // 공지사항 (학사공지) 리스트 조회
 
