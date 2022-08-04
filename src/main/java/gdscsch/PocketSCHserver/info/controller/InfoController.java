@@ -8,8 +8,8 @@ import gdscsch.PocketSCHserver.info.exception.EmptyStringException;
 import gdscsch.PocketSCHserver.info.response.InfoResponseHandler;
 import gdscsch.PocketSCHserver.info.response.KeywordResponseHandler;
 import gdscsch.PocketSCHserver.info.response.ResponseHandler;
+import gdscsch.PocketSCHserver.info.service.InfoNoticesService;
 import gdscsch.PocketSCHserver.info.service.InfoKeywordsService;
-import gdscsch.PocketSCHserver.info.service.InfoUniversityNoticesService;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
@@ -108,7 +108,7 @@ public class InfoController {
         }
     }
 
-    private final InfoUniversityNoticesService infoUniversityNoticesService;
+    private final InfoNoticesService infoNoticesService;
 
     /**
      * 공지사항 (대학공지) 리스트 조회
@@ -118,17 +118,41 @@ public class InfoController {
      * @see <a href="http://127.0.0.1:8080/pocket-sch/v1/info/university-notices">
      * URL : http://127.0.0.1:8080/pocket-sch/v1/info/university-notices
      * </a>
+     * @see <a href="http://127.0.0.1:8080/pocket-sch/v1/info/university-notices?page=0&size=10">
+     * Use param URL : http://127.0.0.1:8080/pocket-sch/v1/info/university-notices?page=0&size=10
+     * </a>
      */
     @GetMapping(value = "/university-notices")
     public ResponseEntity readUniversityNotices(
         @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
         @RequestParam(value = "size", required = false, defaultValue = "10") Integer size
     ) {
-        List<InfoDto.Get> infoDtos = infoUniversityNoticesService.readUniversityNotices(page, size);
-        return InfoResponseHandler.infoResponse("university notices 조회 Success", infoDtos, 0, HttpStatus.OK);
+        Integer infoCategoryId = 0;
+        List<InfoDto.Get> infoDtos = infoNoticesService.readNotices(page, size, infoCategoryId);
+        return InfoResponseHandler.infoResponse("university notices 조회 Success", infoDtos, infoCategoryId, HttpStatus.OK);
     }
 
-    // 공지사항 (학사공지) 리스트 조회
+    /**
+     * 공지사항 (학사공지) 리스트 조회
+     * <p>상세 설명 : 대학 공지 리스트 조회
+     *
+     * @author TaeGyu-Han
+     * @see <a href="http://127.0.0.1:8080/pocket-sch/v1/info/bachelor-notices">
+     * URL : http://127.0.0.1:8080/pocket-sch/v1/info/bachelor-notices
+     * </a>
+     * @see <a href="http://127.0.0.1:8080/pocket-sch/v1/info/bachelor-notices?page=0&size=10">
+     * Use param URL : http://127.0.0.1:8080/pocket-sch/v1/info/bachelor-notices?page=0&size=10
+     * </a>
+     */
+    @GetMapping(value = "/bachelor-notices")
+    public ResponseEntity readBachelorNotices(
+        @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+        @RequestParam(value = "size", required = false, defaultValue = "10") Integer size
+    ) {
+        Integer infoCategoryId = 1;
+        List<InfoDto.Get> infoDtos = infoNoticesService.readNotices(page, size, infoCategoryId);
+        return InfoResponseHandler.infoResponse("university notices 조회 Success", infoDtos, infoCategoryId, HttpStatus.OK);
+    }
 
     // 공지사항 (키워드) 리스트 조회
 }

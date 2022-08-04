@@ -15,20 +15,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class InfoUniversityNoticesService {
+public class InfoNoticesService {
 
     private final InfoRepository infoRepository;
 
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<InfoDto.Get> readUniversityNotices(Integer page, Integer size) {
-
-        Integer InfoCategoryId = 0;
+    public List<InfoDto.Get> readNotices(Integer page, Integer size, Integer infoCategoryId) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
 
-        List<Info> UniversityNotices = infoRepository.findAllByInfoCategoryId(InfoCategoryId, pageable);
+        List<Info> UniversityNotices = infoRepository.findAllByInfoCategoryId(infoCategoryId, pageable);
         List<InfoDto.Get> infoDtos = new ArrayList<InfoDto.Get>();
 
         for (Info UniversityNotice : UniversityNotices) {
