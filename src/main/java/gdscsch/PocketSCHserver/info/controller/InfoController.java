@@ -1,11 +1,13 @@
 package gdscsch.PocketSCHserver.info.controller;
 
 
+import gdscsch.PocketSCHserver.info.dto.InfoDto;
 import gdscsch.PocketSCHserver.info.dto.KeywordDto;
 
 import gdscsch.PocketSCHserver.info.exception.EmptyStringException;
 import gdscsch.PocketSCHserver.info.response.ResponseHandler;
-import gdscsch.PocketSCHserver.info.service.InfoService;
+import gdscsch.PocketSCHserver.info.service.InfoKeywordsService;
+import gdscsch.PocketSCHserver.info.service.InfoUniversityNoticesService;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/pocket-sch/v1/info")
 public class InfoController {
 
-    private final InfoService infoService;
+    private final InfoKeywordsService infoKeywordsService;
 
     /**
      * 공지 키워드 생성
@@ -45,8 +47,8 @@ public class InfoController {
         @RequestBody KeywordDto.Craet createKeywordDto
     ) {
         try {
-            KeywordDto.Get keyword = infoService.createKeyword(token, createKeywordDto);
-            return ResponseHandler.generateResponse("keyword 생성 Success", keyword, HttpStatus.CREATED);
+            KeywordDto.Get keywordDto = infoKeywordsService.createKeyword(token, createKeywordDto);
+            return ResponseHandler.generateResponse("keyword 생성 Success", keywordDto, HttpStatus.CREATED);
         } catch (NoSuchElementException nsee) {
             return ResponseHandler.toekenBadRequestResponse(token, HttpStatus.BAD_REQUEST);
         } catch (EmptyStringException ese) {
@@ -69,8 +71,8 @@ public class InfoController {
         @RequestHeader("Authorization") String token
     ) {
         try {
-            List<KeywordDto.Get> keywords = infoService.readKeywords(token);
-            return ResponseHandler.generateResponse("keywords 조회 Success", keywords, HttpStatus.OK);
+            List<KeywordDto.Get> keywordDtos = infoKeywordsService.readKeywords(token);
+            return ResponseHandler.generateResponse("keywords 조회 Success", keywordDtos, HttpStatus.OK);
         } catch (NoSuchElementException nsee) {
             return ResponseHandler.toekenBadRequestResponse(token, HttpStatus.BAD_REQUEST);
         }
@@ -93,8 +95,8 @@ public class InfoController {
         @PathVariable(value = "id", required = true) Integer id
     ) {
         try {
-            boolean keyword = infoService.deleteKeyword(token, id);
-            if (keyword) {
+            boolean successCheck = infoKeywordsService.deleteKeyword(token, id);
+            if (successCheck) {
                 return ResponseHandler.deleteSuccessResponse("keyword 삭제 Success", id, HttpStatus.OK);
             }
             return ResponseHandler.nonExistIdRequestResponse(id, HttpStatus.BAD_REQUEST);
@@ -103,9 +105,12 @@ public class InfoController {
         }
     }
 
-    // 공지사항 (대학 공지) 리스트 조회
+    
 
-    // 공지사항 (키워드) 리스트 조회
+
+    // 공지사항 (대학공지) 리스트 조회
 
     // 공지사항 (학사공지) 리스트 조회
+
+    // 공지사항 (키워드) 리스트 조회
 }
