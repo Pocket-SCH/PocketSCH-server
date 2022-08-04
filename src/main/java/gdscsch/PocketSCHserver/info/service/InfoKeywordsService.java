@@ -1,7 +1,6 @@
 package gdscsch.PocketSCHserver.info.service;
 
 import gdscsch.PocketSCHserver.info.dto.KeywordDto;
-import gdscsch.PocketSCHserver.info.dto.KeywordDto.Get;
 import gdscsch.PocketSCHserver.info.entity.Keyword;
 import gdscsch.PocketSCHserver.info.exception.EmptyStringException;
 import gdscsch.PocketSCHserver.info.repository.KeywordRepository;
@@ -37,11 +36,11 @@ public class InfoKeywordsService {
         return modelMapper.map(savedKeyword, KeywordDto.Get.class);
     }
 
-    public List<Get> readKeywords(String token) {
+    public List<KeywordDto.Get> readKeywords(String token) {
 
         Token foundToken = tokenRepository.findByToken(token).get();
         List<Keyword> keywords = keywordRepository.findAllByToken(foundToken);
-        List<KeywordDto.Get> keywordDtos = new ArrayList<Get>();
+        List<KeywordDto.Get> keywordDtos = new ArrayList<KeywordDto.Get>();
 
         for (Keyword keyword : keywords) {
             keywordDtos.add(modelMapper.map(keyword, KeywordDto.Get.class));
