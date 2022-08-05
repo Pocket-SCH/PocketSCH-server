@@ -3,16 +3,15 @@ package gdscsch.PocketSCHserver.info.controller;
 
 import gdscsch.PocketSCHserver.info.dto.InfoDto;
 import gdscsch.PocketSCHserver.info.dto.KeywordDto;
-
 import gdscsch.PocketSCHserver.info.exception.EmptyStringException;
 import gdscsch.PocketSCHserver.info.response.InfoResponseHandler;
 import gdscsch.PocketSCHserver.info.response.KeywordResponseHandler;
 import gdscsch.PocketSCHserver.info.response.ResponseHandler;
 import gdscsch.PocketSCHserver.info.service.InfoNoticesService;
 import gdscsch.PocketSCHserver.info.service.InfoKeywordsService;
-import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -64,6 +63,8 @@ public class InfoController {
      * <p>상세 설명 : 공지 목록에서 자신에게 등록한 키워드들 조회
      *
      * @param token : FCM 토큰
+     * @param page  : 페이지 번호
+     * @param size  : 페이지 데이터 호출 사이즈
      * @author TaeGyu-Han
      * @see <a href="http://127.0.0.1:8080/pocket-sch/v1/info/keywords">
      * URL : http://127.0.0.1:8080/pocket-sch/v1/info/keywords
@@ -71,10 +72,12 @@ public class InfoController {
      */
     @GetMapping("/keywords")
     public ResponseEntity readKeywords(
-        @RequestHeader("Authorization") String token
+        @RequestHeader("Authorization") String token,
+        @RequestParam(required = false, defaultValue = "0") Integer page,
+        @RequestParam(required = false, defaultValue = "10") Integer size
     ) {
         try {
-            List<KeywordDto.Get> keywordDtos = infoKeywordsService.readKeywords(token);
+            Page<KeywordDto.Get> keywordDtos = infoKeywordsService.readKeywords(page, size, token);
             return ResponseHandler.generateResponse("keywords 조회 Success", keywordDtos, HttpStatus.OK);
         } catch (NoSuchElementException nsee) {
             return ResponseHandler.toekenBadRequestResponse(token, HttpStatus.BAD_REQUEST);
@@ -95,7 +98,7 @@ public class InfoController {
     @DeleteMapping("/keywords/{id}")
     public ResponseEntity deleteKeyword(
         @RequestHeader("Authorization") String token,
-        @PathVariable(value = "id", required = true) Integer id
+        @PathVariable(value = "id") Integer id
     ) {
         try {
             boolean successCheck = infoKeywordsService.deleteKeyword(token, id);
@@ -112,8 +115,11 @@ public class InfoController {
 
     /**
      * 공지사항 (대학공지) 리스트 조회
-     * <p>상세 설명 : 대학 공지 리스트 조회
+     * <p>상세 설명 : 대학 공지 리스트 조회 API 입니다. 파라미터를 통해서
+     * 페이지 네비게이션과 페이지 사이즈를 조정할 수 있습니다.
      *
+     * @param page : 페이지 번호
+     * @param size : 페이지 데이터 호출 사이즈
      * @author TaeGyu-Han
      * @see <a href="http://127.0.0.1:8080/pocket-sch/v1/info/university-notices">
      * URL : http://127.0.0.1:8080/pocket-sch/v1/info/university-notices
@@ -124,18 +130,21 @@ public class InfoController {
      */
     @GetMapping(value = "/university-notices")
     public ResponseEntity readUniversityNotices(
-        @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
-        @RequestParam(value = "size", required = false, defaultValue = "10") Integer size
+        @RequestParam(required = false, defaultValue = "0") Integer page,
+        @RequestParam(required = false, defaultValue = "10") Integer size
     ) {
         Integer infoCategoryId = 0;
-        List<InfoDto.Get> infoDtos = infoNoticesService.readNotices(page, size, infoCategoryId);
+        Page<InfoDto.Get> infoDtos = infoNoticesService.readNotices(page, size, infoCategoryId);
         return InfoResponseHandler.infoResponse("university notices 조회 Success", infoDtos, infoCategoryId, HttpStatus.OK);
     }
 
     /**
      * 공지사항 (학사공지) 리스트 조회
-     * <p>상세 설명 : 대학 공지 리스트 조회
+     * <p>상세 설명 : 학사 공지 리스트 조회 API 입니다. 파라미터를 통해서
+     * 페이지 네비게이션과 페이지 사이즈를 조정할 수 있습니다.
      *
+     * @param page : 페이지 번호
+     * @param size : 페이지 데이터 호출 사이즈
      * @author TaeGyu-Han
      * @see <a href="http://127.0.0.1:8080/pocket-sch/v1/info/bachelor-notices">
      * URL : http://127.0.0.1:8080/pocket-sch/v1/info/bachelor-notices
@@ -146,11 +155,11 @@ public class InfoController {
      */
     @GetMapping(value = "/bachelor-notices")
     public ResponseEntity readBachelorNotices(
-        @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
-        @RequestParam(value = "size", required = false, defaultValue = "10") Integer size
+        @RequestParam(required = false, defaultValue = "0") Integer page,
+        @RequestParam(required = false, defaultValue = "10") Integer size
     ) {
         Integer infoCategoryId = 1;
-        List<InfoDto.Get> infoDtos = infoNoticesService.readNotices(page, size, infoCategoryId);
+        Page<InfoDto.Get> infoDtos = infoNoticesService.readNotices(page, size, infoCategoryId);
         return InfoResponseHandler.infoResponse("university notices 조회 Success", infoDtos, infoCategoryId, HttpStatus.OK);
     }
 

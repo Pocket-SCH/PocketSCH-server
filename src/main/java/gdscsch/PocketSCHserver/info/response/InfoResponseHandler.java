@@ -1,15 +1,16 @@
 package gdscsch.PocketSCHserver.info.response;
 
+
 import gdscsch.PocketSCHserver.info.dto.InfoDto;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class InfoResponseHandler {
 
-    public static ResponseEntity<Object> infoResponse(String message, List<InfoDto.Get> infoDtos, Integer infoCategoryId,
+    public static ResponseEntity<Object> infoResponse(String message, Page<InfoDto.Get> infoDtos, Integer infoCategoryId,
         HttpStatus status) {
         Map<String, Object> map = new HashMap<String, Object>();
 
