@@ -116,7 +116,7 @@ public class InfoController {
     /**
      * 공지사항 (대학공지) 리스트 조회
      * <p>상세 설명 : 대학 공지 리스트 조회 API 입니다. 파라미터를 통해서
-     * 페이지 네비게이션과 페이지 사이즈를 조정할 수 있습니다.
+     * 페이지 내비게이션과 페이지 사이즈를 조정할 수 있습니다.
      *
      * @param page : 페이지 번호
      * @param size : 페이지 데이터 호출 사이즈
@@ -141,7 +141,7 @@ public class InfoController {
     /**
      * 공지사항 (학사공지) 리스트 조회
      * <p>상세 설명 : 학사 공지 리스트 조회 API 입니다. 파라미터를 통해서
-     * 페이지 네비게이션과 페이지 사이즈를 조정할 수 있습니다.
+     * 페이지 내비게이션과 페이지 사이즈를 조정할 수 있습니다.
      *
      * @param page : 페이지 번호
      * @param size : 페이지 데이터 호출 사이즈
@@ -160,8 +160,36 @@ public class InfoController {
     ) {
         Integer infoCategoryId = 1;
         Page<InfoDto.Get> infoDtos = infoNoticesService.readNotices(page, size, infoCategoryId);
-        return InfoResponseHandler.infoResponse("university notices 조회 Success", infoDtos, infoCategoryId, HttpStatus.OK);
+        return InfoResponseHandler.infoResponse("bachelor notices 조회 Success", infoDtos, infoCategoryId, HttpStatus.OK);
     }
 
-    // 공지사항 (키워드) 리스트 조회
+    /**
+     * 공지사항 (키워드) 리스트 조회
+     * <p>상세 설명 : (학사, 대학)공지 리스트 중에서 자신이 입력한 키워드를 반환하는 API입니다.
+     * 페이지 내비게이션과 페이지 사이즈를 조정할 수 있습니다.
+     *
+     * @param token : FCM 토큰
+     * @param page : 페이지 번호
+     * @param size : 페이지 데이터 호출 사이즈
+     * @author TaeGyu-Han
+     * @see <a href="http://127.0.0.1:8080/pocket-sch/v1/info/bachelor-notices">
+     * URL : http://127.0.0.1:8080/pocket-sch/v1/info/bachelor-notices
+     * </a>
+     * @see <a href="http://127.0.0.1:8080/pocket-sch/v1/info/bachelor-notices?page=0&size=10">
+     * Use param URL : http://127.0.0.1:8080/pocket-sch/v1/info/bachelor-notices?page=0&size=10
+     * </a>
+     */
+    @GetMapping(value = "/search-keyword")
+    public ResponseEntity readKeywordsSearch(
+        @RequestHeader("Authorization") String token,
+        @RequestParam(required = false, defaultValue = "0") Integer page,
+        @RequestParam(required = false, defaultValue = "10") Integer size
+    ) {
+        try {
+            Page<InfoDto.Get> infoDtos = infoNoticesService.readKeywordsNotices(page, size, token);
+            return InfoResponseHandler.infoResponse("bachelor notices 조회 Success", infoDtos, HttpStatus.OK);
+        } catch (NoSuchElementException nsee) {
+            return ResponseHandler.toekenBadRequestResponse(token, HttpStatus.BAD_REQUEST);
+        }
+    }
 }

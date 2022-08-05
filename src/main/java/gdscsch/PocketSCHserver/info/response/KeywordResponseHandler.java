@@ -1,5 +1,6 @@
 package gdscsch.PocketSCHserver.info.response;
 
+
 import gdscsch.PocketSCHserver.info.dto.KeywordDto;
 import java.util.HashMap;
 import java.util.Map;

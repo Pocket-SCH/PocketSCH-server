@@ -21,4 +21,14 @@ public class InfoResponseHandler {
 
         return new ResponseEntity<Object>(map, status);
     }
+
+    public static ResponseEntity<Object> infoResponse(String message, Page<InfoDto.Get> infoDtos, HttpStatus status) {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        map.put("message", message);
+        map.put("statusCode", status.value());
+        map.put("data", infoDtos);
+
+        return new ResponseEntity<Object>(map, status);
+    }
 }
