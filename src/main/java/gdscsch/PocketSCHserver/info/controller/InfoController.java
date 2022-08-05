@@ -187,7 +187,7 @@ public class InfoController {
     ) {
         try {
             Page<InfoDto.Get> infoDtos = infoNoticesService.readKeywordsNotices(page, size, token);
-            return InfoResponseHandler.infoResponse("bachelor notices 조회 Success", infoDtos, HttpStatus.OK);
+            return InfoResponseHandler.infoResponse("keywords notices 조회 Success", infoDtos, HttpStatus.OK);
         } catch (NoSuchElementException nsee) {
             return ResponseHandler.toekenBadRequestResponse(token, HttpStatus.BAD_REQUEST);
         }

@@ -1,5 +1,6 @@
 package gdscsch.PocketSCHserver.info.service;
 
+
 import gdscsch.PocketSCHserver.info.dto.KeywordDto;
 import gdscsch.PocketSCHserver.info.entity.Keyword;
 import gdscsch.PocketSCHserver.info.exception.EmptyStringException;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
+
 
 @Component
 @RequiredArgsConstructor
@@ -54,9 +56,7 @@ public class InfoKeywordsService {
             keywordDtos.add(modelMapper.map(keyword, KeywordDto.Get.class));
         }
 
-        Page<KeywordDto.Get> keywordsDtoPage = new PageImpl<KeywordDto.Get>(keywordDtos, pageable, keywordsPage.getTotalElements());
-
-        return keywordsDtoPage;
+        return new PageImpl<KeywordDto.Get>(keywordDtos, pageable, keywordsPage.getTotalElements());
     }
 
     public boolean deleteKeyword(String token, Integer keywordId) {

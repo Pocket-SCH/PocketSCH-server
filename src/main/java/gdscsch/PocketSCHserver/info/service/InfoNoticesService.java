@@ -12,6 +12,7 @@ import gdscsch.PocketSCHserver.token.repository.TokenRepository;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,9 +46,7 @@ public class InfoNoticesService {
             infoDtos.add(modelMapper.map(infoNotice, InfoDto.Get.class));
         }
 
-        Page<InfoDto.Get> infoDtoPage = new PageImpl<InfoDto.Get>(infoDtos, pageable, infoNoticesPage.getTotalElements());
-
-        return infoDtoPage;
+        return new PageImpl<InfoDto.Get>(infoDtos, pageable, infoNoticesPage.getTotalElements());
     }
 
     public Page<InfoDto.Get> readKeywordsNotices(Integer page, Integer size, String token) {
@@ -60,12 +59,12 @@ public class InfoNoticesService {
         List<Info> keywordsNotices = infoRepositoryCustomImpl.findInfoByTitles(keywords);
 
         List<InfoDto.Get> infoDtos = new ArrayList<InfoDto.Get>();
-        for (Info keywordsNotice : keywordsNotices) {
-            infoDtos.add(modelMapper.map(keywordsNotice, InfoDto.Get.class));
+
+        int lastPageIndex = (page * size) + size;
+        for (int i = page * size; i < Math.min(lastPageIndex, keywordsNotices.size()); i++) {
+            infoDtos.add(modelMapper.map(keywordsNotices.get(i), InfoDto.Get.class));
         }
 
-        Page<InfoDto.Get> infoDtoPage = new PageImpl<InfoDto.Get>(infoDtos, pageable, infoDtos.size());
-
-        return infoDtoPage;
+        return new PageImpl<InfoDto.Get>(infoDtos, pageable, keywordsNotices.size());
     }
 }
