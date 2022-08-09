@@ -1,5 +1,6 @@
 package gdscsch.PocketSCHserver.food.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,14 +24,19 @@ public class FoodStore {
     private Integer id;
 
     @Column(nullable = false, length = 191)
+    private String storeName;
+
+    @Column(nullable = false, columnDefinition="TEXT")
     private String storeUrl;
 
+    @JsonIgnore
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @Builder
-    public FoodStore(String storeUrl) {
+    public FoodStore(String storeName, String storeUrl) {
+        this.storeName = storeName;
         this.storeUrl = storeUrl;
     }
 }
