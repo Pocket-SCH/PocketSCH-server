@@ -2,7 +2,6 @@ package gdscsch.PocketSCHserver.token.controller;
 
 import gdscsch.PocketSCHserver.token.entity.Token;
 import gdscsch.PocketSCHserver.food.service.FoodService;
-import gdscsch.PocketSCHserver.info.dto.AddKeywordDto;
 import gdscsch.PocketSCHserver.response.DefaultRes;
 import gdscsch.PocketSCHserver.response.StatusCode;
 import gdscsch.PocketSCHserver.token.service.TokenService;
@@ -10,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

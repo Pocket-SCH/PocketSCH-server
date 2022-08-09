@@ -1,5 +1,6 @@
 package gdscsch.PocketSCHserver.food.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,6 +31,7 @@ public class FoodRelation {
     @JoinColumn(nullable = false)
     private FoodMenu foodMenu;
 
+    @JsonIgnore
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
