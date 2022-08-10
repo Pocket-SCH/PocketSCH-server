@@ -14,12 +14,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ImageFileService {
     private final ImageFileRepository imageFileRepository;
-    private final TokenRepository tokenRepository;
 
     @Transactional
     public Integer saveFile(ImageFileDto fileDto) {
         return imageFileRepository.save(ImageFile.builder()
-                .token(tokenRepository.findByToken(fileDto.getTokenStr()).get())
+                .token(fileDto.getTokenStr())
                 .filePath(fileDto.getFilePath())
                 .fileName(fileDto.getFileName())
                 .origFilename(fileDto.getOrigFilename())

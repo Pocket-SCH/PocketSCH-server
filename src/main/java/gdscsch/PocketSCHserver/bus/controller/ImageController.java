@@ -12,10 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -57,13 +54,20 @@ public class ImageController {
         }
     }
 
-    @GetMapping(value = "/images/my-image", produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<byte[]> userSearch(@RequestHeader("Authorization") String token) throws IOException {
-        InputStream imageStream = new FileInputStream("/home/ubuntu/pocket-sch/images/" + token + ".jpg");
-        byte[] imageByteArray = imageStream.readAllBytes();
-        imageStream.close();
-
-        return imageByteArray.length == 0? new ResponseEntity(DefaultRes.res(StatusCode.OK, "이미지 호출 완료"), HttpStatus.OK) :
-        new ResponseEntity(DefaultRes.res(StatusCode.OK, "이미지 없음"), HttpStatus.OK);
+    @GetMapping(value = "/image/my-image", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity getMyImage(@RequestHeader("Authorization") String token) throws IOException {
+        File file1 = new File("/home/ubuntu/pocket-sch/images/" + token + ".jpg");
+        if (file1.isFile()) {
+            InputStream imageStream = new FileInputStream("/home/ubuntu/pocket-sch/images/" + token + ".jpg");
+            byte[] imageByteArray = imageStream.readAllBytes();
+            imageStream.close();
+            return new ResponseEntity<byte[]>(imageByteArray, HttpStatus.OK);
+        }
+        else {
+            InputStream imageStream = new FileInputStream("/home/ubuntu/pocket-sch/images/default.jpg");
+            byte[] imageByteArray = imageStream.readAllBytes();
+            imageStream.close();
+            return new ResponseEntity<byte[]>(imageByteArray, HttpStatus.BAD_REQUEST);
+        }
     }
 }

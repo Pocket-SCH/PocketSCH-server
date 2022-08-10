@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import gdscsch.PocketSCHserver.token.entity.*;
 
 @Getter
 @Entity
@@ -18,8 +17,8 @@ public class ImageFile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
-    private Token token;
+    @Column
+    private String token;
 
     @Column(nullable = false)
     private String origFilename;
@@ -31,7 +30,7 @@ public class ImageFile {
     private String filePath;
 
     @Builder
-    public ImageFile(Token token, String origFilename, String fileName, String filePath) {
+    public ImageFile(String token, String origFilename, String fileName, String filePath) {
         this.token = token;
         this.origFilename = origFilename;
         this.fileName = fileName;
