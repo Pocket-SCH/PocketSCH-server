@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class Token {
     @Id
-    @Column(length = 160)
+    @Column(length = 180)
     private String token;
 
     @CreatedDate
