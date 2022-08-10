@@ -9,6 +9,7 @@ import lombok.Setter;
 public class KeywordDto {
 
         @Getter
+        @Setter
         public static class Craet {
             private String keyword;
         }

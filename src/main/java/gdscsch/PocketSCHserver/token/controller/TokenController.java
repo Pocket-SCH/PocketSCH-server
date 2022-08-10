@@ -24,3 +24,4 @@ public class TokenController {
             HttpStatus.OK) :
             new ResponseEntity(DefaultRes.res(StatusCode.OK, "토큰 등록 실패", token1.getToken()), HttpStatus.OK);
     }
+}

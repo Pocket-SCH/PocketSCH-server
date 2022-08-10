@@ -4,6 +4,7 @@ package gdscsch.PocketSCHserver.info.controller;
 import gdscsch.PocketSCHserver.info.dto.InfoDto;
 import gdscsch.PocketSCHserver.info.dto.KeywordDto;
 import gdscsch.PocketSCHserver.info.exception.EmptyStringException;
+import gdscsch.PocketSCHserver.info.exception.KeywordExistException;
 import gdscsch.PocketSCHserver.info.response.InfoResponseHandler;
 import gdscsch.PocketSCHserver.info.response.KeywordResponseHandler;
 import gdscsch.PocketSCHserver.info.response.ResponseHandler;
@@ -53,6 +54,8 @@ public class InfoController {
             return ResponseHandler.generateResponse("keyword 생성 Success", keywordDto, HttpStatus.CREATED);
         } catch (NoSuchElementException nsee) {
             return ResponseHandler.toekenBadRequestResponse(token, HttpStatus.BAD_REQUEST);
+        } catch (KeywordExistException kee) {
+            return KeywordResponseHandler.keywordAlreadyExistBadRequestResponse(createKeywordDto, HttpStatus.BAD_REQUEST);
         } catch (EmptyStringException ese) {
             return KeywordResponseHandler.keywordBadRequestResponse(createKeywordDto, HttpStatus.BAD_REQUEST);
         }

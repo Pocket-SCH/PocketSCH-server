@@ -4,6 +4,7 @@ package gdscsch.PocketSCHserver.info.service;
 import gdscsch.PocketSCHserver.info.dto.KeywordDto;
 import gdscsch.PocketSCHserver.info.entity.Keyword;
 import gdscsch.PocketSCHserver.info.exception.EmptyStringException;
+import gdscsch.PocketSCHserver.info.exception.KeywordExistException;
 import gdscsch.PocketSCHserver.info.repository.KeywordRepository;
 import gdscsch.PocketSCHserver.token.entity.Token;
 import gdscsch.PocketSCHserver.token.repository.TokenRepository;
@@ -38,6 +39,13 @@ public class InfoKeywordsService {
         }
 
         Token foundToken = tokenRepository.findByToken(token).get();
+
+        keyword.setKeyword(keyword.getKeyword().trim());
+        Keyword getKeyword = keywordRepository.findAllByTokenAndKeyword(foundToken, keyword.getKeyword());
+        if (getKeyword != null) {
+            throw new KeywordExistException("이미 존재하는 키워드 입니다.");
+        }
+
         Keyword savedKeyword = keywordRepository.save(new Keyword(foundToken, keyword.getKeyword()));
 
         return modelMapper.map(savedKeyword, KeywordDto.Get.class);
