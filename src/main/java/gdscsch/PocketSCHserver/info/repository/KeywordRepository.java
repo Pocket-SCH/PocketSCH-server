@@ -14,6 +14,8 @@ public interface KeywordRepository extends PagingAndSortingRepository<Keyword, I
 
     List<Keyword> findAllByTokenAndId(Token token, Integer id);
 
+    Keyword findAllByTokenAndKeyword(Token token, String keyword);
+
     Page<Keyword> findAllByToken(Token token, Pageable pageable);
 
     List<Keyword> findAllByToken(Token token);
