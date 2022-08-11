@@ -44,4 +44,16 @@ public class KeywordResponseHandler {
 
         return new ResponseEntity<Object>(map, status);
     }
+
+    public static ResponseEntity<Object> keywordAlreadyExistBadRequestResponse(KeywordDto.Craet keyword, HttpStatus status) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> data = new HashMap<String, Object>();
+        data.put("keyword", keyword.getKeyword());
+
+        map.put("message", "이미 존재하는 keyword 입력 Error");
+        map.put("statusCode", status.value());
+        map.put("data", data);
+
+        return new ResponseEntity<Object>(map, status);
+    }
 }
