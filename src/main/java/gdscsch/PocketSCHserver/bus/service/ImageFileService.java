@@ -15,7 +15,6 @@ import java.util.Optional;
 public class ImageFileService {
     private final ImageFileRepository imageFileRepository;
 
-    @Transactional
     public Integer saveFile(ImageFileDto fileDto) {
         return imageFileRepository.save(ImageFile.builder()
                 .token(fileDto.getTokenStr())

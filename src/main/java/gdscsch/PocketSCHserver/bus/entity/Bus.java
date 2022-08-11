@@ -1,5 +1,6 @@
 package gdscsch.PocketSCHserver.bus.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,6 +33,7 @@ public class Bus {
     @Column(nullable = false)
     private Integer busWeekDay;     // 0:sun 1:mon 2:tue 3:wed ~
 
+    @JsonIgnore
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
