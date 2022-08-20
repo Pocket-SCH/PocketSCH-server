@@ -24,6 +24,7 @@ public class BusController {
     @GetMapping("/timelist/{type}/{weekDay}")
     public ResponseEntity getFoodListByCategory(@PathVariable("type") Integer type, @PathVariable("weekDay") Integer weekDay) {
         List<BusTimeDto> busTimes = busService.getSubwayTimeByWeekDay(type, weekDay);
+        System.out.println("-----here111 + " + busTimes.size());
 
         return busTimes.size() != 0 ? new ResponseEntity(DefaultRes.res(StatusCode.OK, "요일별 시간표 반환 완료", busTimes), HttpStatus.OK) :
                 new ResponseEntity(DefaultRes.res(StatusCode.OK, "해당 요일 시간 없음", busTimes), HttpStatus.OK);
