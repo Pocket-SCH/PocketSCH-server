@@ -9,5 +9,4 @@ public class PocketScHserverApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PocketScHserverApplication.class, args);
 	}
-
 }
